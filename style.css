@@ -164,7 +164,6 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 #graph {
-  width: 2fr;
   height: 100%;
   display: block;
 }
