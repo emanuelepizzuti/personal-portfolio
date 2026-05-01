@@ -87,14 +87,15 @@ main {
   top: var(--header-h);
   bottom: var(--footer-h);
   left: 0; right: 0;
-  display: grid;
-  grid-template-columns: 280px 1fr;
 }
 
 /* ─── Project Sidebar ───────────────────────────────────────────────────── */
 
 aside {
-  border-right: 1px solid var(--border);
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 280px;
+  z-index: 5;
   padding: 24px 16px;
   overflow-y: auto;
   display: flex;
@@ -159,7 +160,8 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 /* ─── Graph Section ─────────────────────────────────────────────────────── */
 
 #graph-section {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
 }
 
