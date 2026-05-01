@@ -157,19 +157,30 @@ function renderGraph(data) {
 
   const W = section.clientWidth;
   const H = section.clientHeight;
+  const SIDEBAR_W = 280; // keep nodes out from under the sidebar overlay
 
   svg.attr('width', W).attr('height', H);
 
   const maxCount = Math.max(...graphNodes.map(n => n.count));
   const rScale = d3.scaleLinear().domain([1, Math.max(maxCount, 2)]).range([8, 26]);
 
+  // Let the simulation settle around the origin, then translate the <g> to centre it
   const sim = d3.forceSimulation(graphNodes)
     .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(90).strength(0.6))
-    .force('charge',    d3.forceManyBody().strength(-220))
-    .force('center',    d3.forceCenter(W / 2, H / 2))
-    .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22));
+    .force('charge',    d3.forceManyBody().strength(-180))
+    .force('center',    d3.forceCenter(0, 0))
+    .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
+    .stop();
 
-  const g = svg.append('g');
+  // Pre-warm to convergence at origin
+  for (let i = 0; i < 300; i++) sim.tick();
+
+  // Centre of the visible area (right of sidebar)
+  const cx = SIDEBAR_W + (W - SIDEBAR_W) / 2;
+  const cy = H / 2;
+
+  // Translate the whole group so the graph cluster sits in the visible centre
+  const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
 
   linkSelection = g.append('g').selectAll('line')
     .data(graphLinks)
@@ -188,12 +199,16 @@ function renderGraph(data) {
     .attr('dy', d => rScale(d.count) + 14)
     .text(d => d.id);
 
-  sim.on('tick', () => {
+  function ticked() {
     linkSelection
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
     nodeSelection.attr('transform', d => `translate(${d.x},${d.y})`);
-  });
+  }
+
+  sim.on('tick', ticked);
+  ticked(); // render pre-warmed positions immediately before simulation restarts
+  sim.alpha(0.3).restart();
 
   // Drag to reposition nodes
   nodeSelection.call(
@@ -208,7 +223,7 @@ function renderGraph(data) {
     const w = section.clientWidth;
     const h = section.clientHeight;
     svg.attr('width', w).attr('height', h);
-    sim.force('center', d3.forceCenter(w / 2, h / 2)).alpha(0.2).restart();
+    g.attr('transform', `translate(${SIDEBAR_W + (w - SIDEBAR_W) / 2},${h / 2})`);
   });
   ro.observe(section);
 }
