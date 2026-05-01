@@ -21,12 +21,12 @@ const CONFIG = {
 /* ─── Sample data (used when SHEET_URL is empty) ─────────────────────────── */
 
 const SAMPLE_PROJECTS = [
-  { name: 'Forma Studio',   url: '#', platform: 'Behance',   fields: ['Branding', 'Typography'] },
-  { name: 'Luce Series',    url: '#', platform: 'Instagram', fields: ['Photography', 'Art Direction'] },
-  { name: 'Grid System',    url: '#', platform: 'Behance',   fields: ['UI/UX', 'Typography'] },
-  { name: 'Volta Campaign', url: '#', platform: 'Behance',   fields: ['Branding', 'Motion', 'Art Direction'] },
-  { name: 'Notte',          url: '#', platform: 'Instagram', fields: ['Photography', 'Motion'] },
-  { name: 'Surface Kit',    url: '#', platform: 'Behance',   fields: ['UI/UX', 'Illustration'] },
+  { name: 'Forma Studio',  url: '#', platform: 'Behance',   fields: ['Branding', 'Typography'] },
+  { name: 'Luce Series',   url: '#', platform: 'Instagram', fields: ['Photography', 'Art Direction'] },
+  { name: 'Grid System',   url: '#', platform: 'Behance',   fields: ['UI/UX', 'Typography'] },
+  { name: 'Volta Campaign',url: '#', platform: 'Behance',   fields: ['Branding', 'Motion', 'Art Direction'] },
+  { name: 'Notte',         url: '#', platform: 'Instagram', fields: ['Photography', 'Motion'] },
+  { name: 'Surface Kit',   url: '#', platform: 'Behance',   fields: ['UI/UX', 'Illustration'] },
 ];
 
 /* ─── State ──────────────────────────────────────────────────────────────── */
@@ -44,7 +44,7 @@ let nodeSelection, linkSelection;
   renderGraph(projects);
 })();
 
-/* ─── Config application ─────────────────────────────────────────────────── */
+/* ─── Config application ──────────────────────────────────────────────────── */
 
 function applyConfig() {
   document.getElementById('tagline').textContent = CONFIG.TAGLINE;
@@ -54,6 +54,7 @@ function applyConfig() {
   document.getElementById('link-behance').href   = CONFIG.BEHANCE;
   document.getElementById('link-email').href     = CONFIG.EMAIL;
 
+  // Build marquee text (duplicated for seamless loop)
   const ticker = CONFIG.TICKER.repeat(12);
   document.querySelectorAll('.marquee-text').forEach(el => {
     el.textContent = ticker;
@@ -73,12 +74,12 @@ async function loadProjects() {
       complete({ data }) {
         const parsed = data
           .map(row => ({
-            name:        (row['name']        || row['Project Name'] || '').trim(),
-            url:         (row['url']         || row['URL']          || '#').trim(),
-            platform:    (row['platform']    || row['Platform']     || '').trim(),
-            fields:      parseFields(row['fields'] || row['Fields'] || ''),
-            description: (row['description'] || row['Description']  || '').trim(),
-            thumbnail:   (row['thumbnail']   || row['Thumbnail URL']|| '').trim(),
+            name:      (row['name']      || row['Project Name'] || '').trim(),
+            url:       (row['url']       || row['URL']          || '#').trim(),
+            platform:  (row['platform']  || row['Platform']     || '').trim(),
+            fields:    parseFields(row['fields'] || row['Fields'] || ''),
+            description:(row['description'] || row['Description'] || '').trim(),
+            thumbnail: (row['thumbnail'] || row['Thumbnail URL'] || '').trim(),
           }))
           .filter(p => p.name);
         resolve(parsed.length ? parsed : SAMPLE_PROJECTS);
@@ -194,6 +195,7 @@ function renderGraph(data) {
     nodeSelection.attr('transform', d => `translate(${d.x},${d.y})`);
   });
 
+  // Drag to reposition nodes
   nodeSelection.call(
     d3.drag()
       .on('start', (event, d) => { if (!event.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
@@ -201,6 +203,7 @@ function renderGraph(data) {
       .on('end',   (event, d) => { if (!event.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
   );
 
+  // Resize handling
   const ro = new ResizeObserver(() => {
     const w = section.clientWidth;
     const h = section.clientHeight;
@@ -232,9 +235,5 @@ function clearHighlight() {
 /* ─── Utility ────────────────────────────────────────────────────────────── */
 
 function escHtml(str) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

@@ -43,7 +43,7 @@ header {
   background: var(--bg);
 }
 
-.header-col.left   { display: flex; align-items: center; }
+.header-col.left  { display: flex; align-items: center; }
 .header-col.center { display: flex; justify-content: center; }
 .header-col.right  { display: flex; justify-content: flex-end; }
 
@@ -65,6 +65,7 @@ header {
   display: flex;
   gap: 20px;
   align-items: center;
+  list-style: none;
 }
 
 .social-links a {

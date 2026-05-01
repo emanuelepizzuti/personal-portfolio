@@ -6,11 +6,10 @@ Personal portfolio — hosted on GitHub Pages, data from Google Sheets.
 
 ## 1. GitHub Pages setup
 
-For the site to be live at `https://emanuelepizzuti.github.io`:
-
-- The repo **must be named** `emanuelepizzuti.github.io` on GitHub.
-- Go to **Settings → Pages → Source** and select `main` / `/ (root)`.
-- Your site goes live at `https://emanuelepizzuti.github.io` within ~1 minute of pushing.
+1. Create a repo named exactly **`emanuelepizzuti.github.io`** on GitHub.
+2. Push all files from this folder to the `main` branch.
+3. Go to **Settings → Pages → Source** and select `main` / `/ (root)`.
+4. Your site will be live at `https://emanuelepizzuti.github.io` in ~1 minute.
 
 ---
 
@@ -26,13 +25,14 @@ Make a Google Sheet with these column headers in row 1 (exact spelling):
 
 - **fields**: comma-separated list of categories, e.g. `Branding, Typography, Motion`
 - **platform**: where the project lives (Behance, Instagram, etc.)
-- **description** and **thumbnail**: optional, stored for future use
+- **thumbnail**: optional, not displayed yet but stored for future use
+- **description**: optional, not displayed yet
 
 ### Publish the sheet as CSV
 
 1. **File → Share → Publish to web**
-2. First dropdown → **Sheet1**
-3. Second dropdown → **Comma-separated values (.csv)**
+2. In the first dropdown choose **Sheet1** (or whichever sheet has your data)
+3. In the second dropdown choose **Comma-separated values (.csv)**
 4. Click **Publish** and copy the URL
 
 ### Wire it up
