@@ -105,12 +105,7 @@ function renderSidebar(data) {
     a.href = project.url;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
-    a.innerHTML = `
-      <div class="project-btn-name">${escHtml(project.name)}</div>
-      
-    `;
-
-/* ${project.platform ? `<div class="project-btn-meta">${escHtml(project.platform)}</div>` : ''} */
+    a.innerHTML = `<div class="project-btn-name">${escHtml(project.name)}</div>`;
 
     a.addEventListener('mouseenter', () => highlight(project.fields));
     a.addEventListener('mouseleave', clearHighlight);
@@ -159,30 +154,23 @@ function renderGraph(data) {
 
   const W = section.clientWidth;
   const H = section.clientHeight;
-  const SIDEBAR_W = 280; // keep nodes out from under the sidebar overlay
 
   svg.attr('width', W).attr('height', H);
 
   const maxCount = Math.max(...graphNodes.map(n => n.count));
   const rScale = d3.scaleLinear().domain([1, Math.max(maxCount, 2)]).range([8, 26]);
 
-  // Let the simulation settle around the origin, then translate the <g> to centre it
   const sim = d3.forceSimulation(graphNodes)
     .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(90).strength(0.6))
     .force('charge',    d3.forceManyBody().strength(-180))
-    .force('center',    d3.forceCenter(0, 0))
+    .force('center',    d3.forceCenter(W / 2, H / 2))
     .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
     .stop();
 
-  // Pre-warm to convergence at origin
+  // Pre-warm to convergence
   for (let i = 0; i < 300; i++) sim.tick();
 
-  // Centre of the visible area (right of sidebar)
-  const cx = SIDEBAR_W + (W - SIDEBAR_W) / 2;
-  const cy = H / 2;
-
-  // Translate the whole group so the graph cluster sits in the visible centre
-  const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+  const g = svg.append('g');
 
   linkSelection = g.append('g').selectAll('line')
     .data(graphLinks)
@@ -225,7 +213,7 @@ function renderGraph(data) {
     const w = section.clientWidth;
     const h = section.clientHeight;
     svg.attr('width', w).attr('height', h);
-    g.attr('transform', `translate(${SIDEBAR_W + (w - SIDEBAR_W) / 2},${h / 2})`);
+    sim.force('center', d3.forceCenter(w / 2, h / 2)).alpha(0.2).restart();
   });
   ro.observe(section);
 }
