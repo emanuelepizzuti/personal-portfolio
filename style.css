@@ -23,7 +23,7 @@ html, body {
   height: 100%;
   background: var(--bg);
   color: var(--fg);
-  font-family: 'Inter', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   font-size: 13px;
   overflow: hidden;
 }
@@ -38,7 +38,6 @@ header {
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   padding: 0 24px;
-  border-bottom: 1px solid var(--border);
   z-index: 10;
   background: var(--bg);
 }
@@ -101,7 +100,10 @@ aside {
   display: flex;
   flex-direction: column;
   -ms-flex-align: center;
-  gap: 6px;  
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  
 }
 
 aside::-webkit-scrollbar { width: 4px; }
@@ -120,7 +122,6 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   width: 100%;
   padding: 10px 12px;
   background: transparent;
-  border: 1px solid var(--border);
   border-radius: 3px;
   color: var(--muted);
   cursor: pointer;

@@ -107,8 +107,10 @@ function renderSidebar(data) {
     a.rel = 'noopener noreferrer';
     a.innerHTML = `
       <div class="project-btn-name">${escHtml(project.name)}</div>
-      ${project.platform ? `<div class="project-btn-meta">${escHtml(project.platform)}</div>` : ''}
+      
     `;
+
+/* ${project.platform ? `<div class="project-btn-meta">${escHtml(project.platform)}</div>` : ''} */
 
     a.addEventListener('mouseenter', () => highlight(project.fields));
     a.addEventListener('mouseleave', clearHighlight);
