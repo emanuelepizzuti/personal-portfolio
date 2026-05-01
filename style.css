@@ -100,6 +100,7 @@ aside {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  -ms-flex-align: center;
   gap: 6px;  
 }
 
