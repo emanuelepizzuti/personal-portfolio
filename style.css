@@ -86,6 +86,9 @@ main {
   top: var(--header-h);
   bottom: var(--footer-h);
   left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ─── Project Sidebar ───────────────────────────────────────────────────── */
@@ -162,8 +165,9 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 /* ─── Graph Section ─────────────────────────────────────────────────────── */
 
 #graph-section {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  height: 100%;
   overflow: hidden;
 }
 
