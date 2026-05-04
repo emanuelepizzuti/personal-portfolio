@@ -3,19 +3,19 @@
 
 const CONFIG = {
   // After publishing your Google Sheet as CSV (see README), paste the URL here.
-  SHEET_URL: '',
+  SHEET_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTiNoGU6wb6qQE8OSTQGolNp9DSl2ic_RFhMn_B9QiVf8rtzKjuSfAeuYcwfPz91zBK148DiPY4Y-Uu/pub?gid=0&single=true&output=csv',
 
   // Your tagline shown in the header center.
-  TAGLINE: 'designer & creative',
+  TAGLINE: 'no',
 
   // Social links — fill in your handles.
-  LINKEDIN:  'https://linkedin.com/in/YOUR_HANDLE',
-  INSTAGRAM: 'https://instagram.com/YOUR_HANDLE',
-  BEHANCE:   'https://behance.net/YOUR_HANDLE',
+  LINKEDIN:  'https://www.linkedin.com/in/emanuelepizzuti/',
+  INSTAGRAM: 'https://www.instagram.com/data.piz/',
+  BEHANCE:   'https://www.behance.net/emanuelepizzuti',
   EMAIL:     'mailto:emanuele.pizzuti96@gmail.com',
 
   // Footer ticker text.
-  TICKER: 'website under construction ✦ ',
+  TICKER: 'weeeeeeeeeebsite under constructiooooooooooon ✦ ',
 };
 
 /* ─── Sample data (used when SHEET_URL is empty) ─────────────────────────── */
