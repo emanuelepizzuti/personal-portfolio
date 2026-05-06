@@ -237,7 +237,8 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .project-btn.is-filtered-out {
-  display: none;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .graph-empty {
