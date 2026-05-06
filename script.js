@@ -3,7 +3,7 @@
 
 const CONFIG = {
   // After publishing your Google Sheet as CSV (see README), paste the URL here.
-  SHEET_URL: '',
+  SHEET_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTiNoGU6wb6qQE8OSTQGolNp9DSl2ic_RFhMn_B9QiVf8rtzKjuSfAeuYcwfPz91zBK148DiPY4Y-Uu/pub?gid=0&single=true&output=csv',
 
   // Your tagline shown in the header center.
   TAGLINE: 'designer & creative',
