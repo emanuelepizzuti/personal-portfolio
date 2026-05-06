@@ -34,6 +34,7 @@ const SAMPLE_PROJECTS = [
 let projects = [];
 let graphNodes = [], graphLinks = [];
 let nodeSelection, linkSelection;
+let selectedNodes = new Set();
 
 /* ─── Boot ───────────────────────────────────────────────────────────────── */
 
@@ -106,11 +107,12 @@ function renderSidebar(data) {
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.innerHTML = `<div class="project-btn-name">${escHtml(project.name)}</div>`;
+    a.dataset.fields = JSON.stringify(project.fields);
 
-    a.addEventListener('mouseenter', () => highlight(project.fields));
-    a.addEventListener('mouseleave', clearHighlight);
-    a.addEventListener('focus',      () => highlight(project.fields));
-    a.addEventListener('blur',       clearHighlight);
+    a.addEventListener('mouseenter', () => { if (selectedNodes.size === 0) highlight(project.fields); });
+    a.addEventListener('mouseleave', () => { if (selectedNodes.size === 0) clearHighlight(); });
+    a.addEventListener('focus',      () => { if (selectedNodes.size === 0) highlight(project.fields); });
+    a.addEventListener('blur',       () => { if (selectedNodes.size === 0) clearHighlight(); });
 
     aside.appendChild(a);
   });
@@ -200,6 +202,17 @@ function renderGraph(data) {
   ticked(); // render pre-warmed positions immediately before simulation restarts
   sim.alpha(0.3).restart();
 
+  // Node click → toggle selection & filter sidebar
+  nodeSelection.on('click', (event, d) => {
+    event.stopPropagation();
+    if (selectedNodes.has(d.id)) {
+      selectedNodes.delete(d.id);
+    } else {
+      selectedNodes.add(d.id);
+    }
+    applySelection();
+  });
+
   // Drag to reposition nodes
   nodeSelection.call(
     d3.drag()
@@ -235,6 +248,39 @@ function clearHighlight() {
   if (!nodeSelection) return;
   nodeSelection.classed('is-active', false).classed('is-dimmed', false);
   linkSelection.classed('is-active', false).classed('is-dimmed', false);
+}
+
+function applySelection() {
+  if (selectedNodes.size === 0) {
+    clearHighlight();
+    document.querySelectorAll('.project-btn').forEach(el => el.classList.remove('is-filtered-out'));
+    return;
+  }
+
+  // Expand selection: clicked nodes + their direct neighbours
+  const litNodes = new Set(selectedNodes);
+  graphLinks.forEach(l => {
+    const s = l.source.id ?? l.source;
+    const t = l.target.id ?? l.target;
+    if (selectedNodes.has(s)) litNodes.add(t);
+    if (selectedNodes.has(t)) litNodes.add(s);
+  });
+
+  nodeSelection
+    .classed('is-active',   d => litNodes.has(d.id))
+    .classed('is-dimmed',   d => !litNodes.has(d.id))
+    .classed('is-selected', d => selectedNodes.has(d.id));
+
+  linkSelection
+    .classed('is-active', d => litNodes.has(d.source.id) && litNodes.has(d.target.id))
+    .classed('is-dimmed', d => !(litNodes.has(d.source.id) && litNodes.has(d.target.id)));
+
+  // Filter sidebar to projects that share at least one field with litNodes
+  document.querySelectorAll('.project-btn').forEach(el => {
+    const fields = JSON.parse(el.dataset.fields || '[]');
+    const matches = fields.some(f => litNodes.has(f));
+    el.classList.toggle('is-filtered-out', !matches);
+  });
 }
 
 /* ─── Utility ────────────────────────────────────────────────────────────── */
