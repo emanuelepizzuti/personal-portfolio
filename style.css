@@ -1,20 +1,26 @@
 /* ─── Reset & Variables ─────────────────────────────────────────────────── */
 
 :root {
+
   --bg:           #c1c1c1;
   --fg:           #1c1c1c;
   --muted:        #4a4a4a;
   --border:       #1c1c1c;
   --hover-bg:     #bababa;
-  --node-off:     #222222;
+
+  --node-off:     #c1c1c1;
   --node-on:      #f0ede8;
   --node-stroke:  #333333;
+
   --edge-off:     #1e1e1e;
   --edge-on:      #3a3a3a;
+
   --label-off:    #3a3a3a;
   --label-on:     #f0ede8;
+
   --header-h:     58px;
-  --footer-h:     38px;
+  --footer-h:     58px;
+
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -202,11 +208,12 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .node text {
   fill: var(--label-off);
   font-family: "Archivo", sans-serif;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.06em;
   pointer-events: none;
   text-anchor: middle;
   transition: fill 0.3s ease;
+
 }
 
 .node.is-active circle {
