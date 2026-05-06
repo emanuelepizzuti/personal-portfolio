@@ -126,19 +126,21 @@ function buildGraphData(data) {
 
   graphNodes = Array.from(fieldCount.entries()).map(([id, count]) => ({ id, count }));
 
-  const seen = new Set();
-  graphLinks = [];
+  // Count how many projects each pair of fields shares (link weight)
+  const linkWeights = new Map();
   data.forEach(p => {
     const fs = p.fields;
     for (let i = 0; i < fs.length; i++) {
       for (let j = i + 1; j < fs.length; j++) {
         const key = [fs[i], fs[j]].sort().join('\x00');
-        if (!seen.has(key)) {
-          seen.add(key);
-          graphLinks.push({ source: fs[i], target: fs[j] });
-        }
+        linkWeights.set(key, (linkWeights.get(key) || 0) + 1);
       }
     }
+  });
+
+  graphLinks = Array.from(linkWeights.entries()).map(([key, weight]) => {
+    const [source, target] = key.split('\x00');
+    return { source, target, weight };
   });
 }
 
@@ -159,11 +161,17 @@ function renderGraph(data) {
 
   svg.attr('width', W).attr('height', H);
 
-  const maxCount = Math.max(...graphNodes.map(n => n.count));
-  const rScale = d3.scaleLinear().domain([1, Math.max(maxCount, 2)]).range([8, 26]);
+  const maxCount  = Math.max(...graphNodes.map(n => n.count));
+  const maxWeight = Math.max(...graphLinks.map(l => l.weight), 1);
+
+  // Sqrt scale: node radius proportional to area, not radius
+  const rScale = d3.scaleSqrt().domain([1, Math.max(maxCount, 2)]).range([8, 36]);
+
+  // More shared projects → shorter distance (closer nodes)
+  const distScale = d3.scaleLinear().domain([1, maxWeight]).range([180, 60]);
 
   const sim = d3.forceSimulation(graphNodes)
-    .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(90).strength(0.6))
+    .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(l => distScale(l.weight)).strength(0.5))
     .force('charge',    d3.forceManyBody().strength(-180))
     .force('center',    d3.forceCenter(W / 2, H / 2))
     .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
