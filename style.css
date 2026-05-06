@@ -192,6 +192,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   fill: var(--node-off);
   stroke: var(--node-stroke);
   stroke-width: 1px;
+  cursor: pointer;
   transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
@@ -218,6 +219,16 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .node.is-dimmed text { fill: #1c1c1c; }
+
+.node.is-selected circle {
+  stroke: var(--fg);
+  stroke-width: 2px;
+}
+
+.project-btn.is-filtered-out {
+  opacity: 0.15;
+  pointer-events: none;
+}
 
 .graph-empty {
   position: absolute;
