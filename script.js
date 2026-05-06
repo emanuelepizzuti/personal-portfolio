@@ -202,14 +202,21 @@ function renderGraph(data) {
   ticked(); // render pre-warmed positions immediately before simulation restarts
   sim.alpha(0.3).restart();
 
-  // Node click → toggle selection & filter sidebar
+  // Node click → single select (click same node again to deselect)
   nodeSelection.on('click', (event, d) => {
     event.stopPropagation();
     if (selectedNodes.has(d.id)) {
-      selectedNodes.delete(d.id);
+      selectedNodes.clear();
     } else {
+      selectedNodes.clear();
       selectedNodes.add(d.id);
     }
+    applySelection();
+  });
+
+  // Click outside graph → reset filter
+  svg.on('click', () => {
+    selectedNodes.clear();
     applySelection();
   });
 
