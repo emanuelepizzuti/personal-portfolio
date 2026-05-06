@@ -5,7 +5,7 @@
   --fg:           #1c1c1c;
   --muted:        #4a4a4a;
   --border:       #1c1c1c;
-  --hover-bg:     #111111;
+  --hover-bg:     #bababa;
   --node-off:     #222222;
   --node-on:      #f0ede8;
   --node-stroke:  #333333;
@@ -139,6 +139,8 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   border-color: #333;
   color: var(--fg);
   background: var(--hover-bg);
+  transform: translateX(6px);
+  transition: transform 0.8s ease;
 }
 
 .project-btn-name {
