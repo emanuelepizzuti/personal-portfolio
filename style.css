@@ -136,7 +136,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   cursor: pointer;
   text-align: left;
   text-decoration: none;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.35s ease, opacity 0.2s;
   user-select: none;
 }
 
@@ -234,6 +234,11 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .node.is-selected circle {
   stroke: var(--fg);
   stroke-width: 2px;
+}
+
+.project-btn.is-filtered-in {
+  transform: translateX(8px);
+  color: var(--fg);
 }
 
 .project-btn.is-filtered-out {

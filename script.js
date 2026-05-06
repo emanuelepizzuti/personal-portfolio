@@ -260,7 +260,10 @@ function clearHighlight() {
 function applySelection() {
   if (selectedNodes.size === 0) {
     clearHighlight();
-    document.querySelectorAll('.project-btn').forEach(el => el.classList.remove('is-filtered-out'));
+    document.querySelectorAll('.project-btn').forEach(el => {
+      el.classList.remove('is-filtered-out');
+      el.classList.remove('is-filtered-in');
+    });
     return;
   }
 
@@ -275,11 +278,12 @@ function applySelection() {
     .classed('is-active', d => litNodes.has(d.source.id) && litNodes.has(d.target.id))
     .classed('is-dimmed', d => !(litNodes.has(d.source.id) && litNodes.has(d.target.id)));
 
-  // Filter sidebar to projects that share at least one field with litNodes
+  // Filter sidebar: matching buttons slide right, non-matching fade
   document.querySelectorAll('.project-btn').forEach(el => {
     const fields = JSON.parse(el.dataset.fields || '[]');
     const matches = fields.some(f => litNodes.has(f));
     el.classList.toggle('is-filtered-out', !matches);
+    el.classList.toggle('is-filtered-in',  matches);
   });
 }
 
