@@ -257,14 +257,7 @@ function applySelection() {
     return;
   }
 
-  // Expand selection: clicked nodes + their direct neighbours
-  const litNodes = new Set(selectedNodes);
-  graphLinks.forEach(l => {
-    const s = l.source.id ?? l.source;
-    const t = l.target.id ?? l.target;
-    if (selectedNodes.has(s)) litNodes.add(t);
-    if (selectedNodes.has(t)) litNodes.add(s);
-  });
+  const litNodes = selectedNodes;
 
   nodeSelection
     .classed('is-active',   d => litNodes.has(d.id))
