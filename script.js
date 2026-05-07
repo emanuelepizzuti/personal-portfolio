@@ -106,7 +106,10 @@ function renderSidebar(data) {
     a.href = project.url;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
-    a.innerHTML = `<div class="project-btn-name">${escHtml(project.name)}</div>`;
+    a.innerHTML = `
+      <div class="project-btn-name">${escHtml(project.name)}</div>
+      <div class="project-btn-platform">Explore on ${escHtml(project.platform)} -></div>
+    `;
     a.dataset.fields = JSON.stringify(project.fields);
 
     a.addEventListener('mouseenter', () => { if (selectedNodes.size === 0) highlight(project.fields); });
@@ -165,7 +168,7 @@ function renderGraph(data) {
   const maxWeight = Math.max(...graphLinks.map(l => l.weight), 1);
 
   // Sqrt scale: node radius proportional to area, not radius
-  const rScale = d3.scaleSqrt().domain([1, Math.max(maxCount, 2)]).range([8, 36]);
+  const rScale = d3.scaleSqrt().domain([1, Math.max(maxCount, 2)]).range([16, 48]);
 
   // More shared projects → shorter distance (closer nodes)
   const distScale = d3.scaleLinear().domain([1, maxWeight]).range([180, 60]);
@@ -261,8 +264,8 @@ function highlight(activeFields) {
 
 function clearHighlight() {
   if (!nodeSelection) return;
-  nodeSelection.classed('is-active', false).classed('is-dimmed', false);
-  linkSelection.classed('is-active', false).classed('is-dimmed', false);
+  nodeSelection.classed('is-active', false).classed('is-dimmed', false).classed('is-selected', false);
+  linkSelection.classed('is-active', false).classed('is-dimmed', false).classed('is-selected', false);
 }
 
 function applySelection() {
