@@ -98,12 +98,7 @@ header {
 #bio-text {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
-<<<<<<< HEAD
-  text-transform: uppercase;
-  color: var(--primary);
-=======
   color: var(--textcolor);
->>>>>>> parent of 43e7a2c (Replace grainy SVG filter with simple drop-shadow glow)
   letter-spacing: 0.04em;
   line-height: 1.7;
   text-transform: none;
@@ -333,15 +328,9 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .node.is-active circle {
-<<<<<<< HEAD
-  fill: var(--primary);
-  /* stroke: var(--fg); */
-  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.6));
-=======
   fill: var(--node-on);
   stroke: var(--fg);
   filter: url(#glow-grain-active);
->>>>>>> parent of 43e7a2c (Replace grainy SVG filter with simple drop-shadow glow)
 }
 
 .node.is-active text { fill: var(--primary); }
