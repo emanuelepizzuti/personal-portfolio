@@ -54,26 +54,42 @@
   <svg style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <!-- default node glow -->
-      <filter id="glow-grain" x="-70%" y="-70%" width="320%" height="320%" color-interpolation-filters="sRGB">
+      <filter id="glow-grain" x="-80%" y="-80%" width="360%" height="360%" color-interpolation-filters="sRGB">
+        <!-- soft white glow clipped to node shape -->
         <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/>
-        <feFlood flood-color="white" flood-opacity="0.15" result="white"/>
+        <feFlood flood-color="white" flood-opacity="0.35" result="white"/>
         <feComposite in="white" in2="blur" operator="in" result="glow"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
-        <feDisplacementMap in="glow" in2="noise" scale="32" xChannelSelector="R" yChannelSelector="G" result="grainy"/>
+        <!-- fractal grain: high-contrast sparse white spots from noise alpha -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" seed="3" result="noise"/>
+        <feColorMatrix in="noise" type="matrix"
+          values="0 0 0 0 1
+                  0 0 0 0 1
+                  0 0 0 0 1
+                  6 0 0 0 -4" result="grainWhite"/>
+        <!-- clip grain to glow area so it stays inside the halo -->
+        <feComposite in="grainWhite" in2="glow" operator="in" result="grainInGlow"/>
+        <!-- final composite: glow halo + grain spots + original node on top -->
         <feMerge>
-          <feMergeNode in="grainy"/>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="grainInGlow"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
       </filter>
       <!-- active / hover node glow (brighter, bigger) -->
-      <filter id="glow-grain-active" x="-70%" y="-70%" width="320%" height="320%" color-interpolation-filters="sRGB">
+      <filter id="glow-grain-active" x="-80%" y="-80%" width="360%" height="360%" color-interpolation-filters="sRGB">
         <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="blur"/>
-        <feFlood flood-color="white" flood-opacity="0.25" result="white"/>
+        <feFlood flood-color="white" flood-opacity="0.6" result="white"/>
         <feComposite in="white" in2="blur" operator="in" result="glow"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
-        <feDisplacementMap in="glow" in2="noise" scale="32" xChannelSelector="R" yChannelSelector="G" result="grainy"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" seed="3" result="noise"/>
+        <feColorMatrix in="noise" type="matrix"
+          values="0 0 0 0 1
+                  0 0 0 0 1
+                  0 0 0 0 1
+                  6 0 0 0 -4" result="grainWhite"/>
+        <feComposite in="grainWhite" in2="glow" operator="in" result="grainInGlow"/>
         <feMerge>
-          <feMergeNode in="grainy"/>
+          <feMergeNode in="glow"/>
+          <feMergeNode in="grainInGlow"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
       </filter>
