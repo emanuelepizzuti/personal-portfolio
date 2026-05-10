@@ -52,6 +52,34 @@
     </div>
   </footer>
 
+  <!-- Grainy glow filter for graph nodes -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="glow-grain" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/>
+        <feFlood flood-color="white" flood-opacity="1" result="glowColor"/>
+        <feComposite in="glowColor" in2="blur" operator="in" result="glow"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="noise"/>
+        <feDisplacementMap in="glow" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="grainedGlow"/>
+        <feMerge>
+          <feMergeNode in="grainedGlow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="glow-grain-active" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="blur"/>
+        <feFlood flood-color="white" flood-opacity="1" result="glowColor"/>
+        <feComposite in="glowColor" in2="blur" operator="in" result="glow"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="noise"/>
+        <feDisplacementMap in="glow" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="grainedGlow"/>
+        <feMerge>
+          <feMergeNode in="grainedGlow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="script.js"></script>
