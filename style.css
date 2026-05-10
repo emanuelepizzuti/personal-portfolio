@@ -13,7 +13,7 @@
   --node-stroke:  #333333;
 
   --edge-off:     #1e1e1e;
-  --edge-on:      #3a3a3a;
+  --edge-on:      #ffffff;
 
   --label-off:    #3a3a3a;
   --label-on:     #f0ede8;
@@ -21,7 +21,7 @@
   --header-h:     58px;
   --footer-h:     58px;
 
-  --fontsize:     11px;
+  --fontsize:     12.4px;
   --fontweight:   200;
 
 }
@@ -95,6 +95,7 @@ header {
 #bio-text {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
+  text-transform: uppercase;
   color: var(--textcolor);
   letter-spacing: 0.04em;
   line-height: 1.7;
@@ -291,7 +292,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 /* ─── D3 Graph Elements ─────────────────────────────────────────────────── */
 
 .link {
-  stroke: var(--edge-off);
+  stroke: var(--edge-on);
   stroke-width: 1px;
   transition: stroke 0.3s ease;
 }
@@ -304,8 +305,8 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   stroke: var(--node-stroke);
   stroke-width: 1px;
   cursor: pointer;
-  filter: url(#glow-grain);
-  transition: fill 0.3s ease, stroke 0.3s ease;
+  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.3));
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
 }
 
 .node text {
@@ -322,13 +323,13 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .node circle:hover {
-  filter: url(#glow-grain-active);
+  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.6));
 }
 
 .node.is-active circle {
   fill: var(--node-on);
   stroke: var(--fg);
-  filter: url(#glow-grain-active);
+  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.6));
 }
 
 .node.is-active text { fill: var(--label-on); }
