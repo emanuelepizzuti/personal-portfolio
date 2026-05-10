@@ -2,9 +2,9 @@
 
 :root {
 
-  --bg:           #c1c1c1;
+  --bg:           #0b0b0b;
   --fg:           #1c1c1c;
-  --muted:        #4a4a4a;
+  --muted:        #fbff00;
   --border:       #1c1c1c;
   --hover-bg:     #bababa;
 
@@ -60,7 +60,7 @@ header {
   font-size: var(--fontsize);
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: var(--fg);
+  color: var(--muted);
 }
 
 .tagline {
@@ -89,6 +89,22 @@ header {
 
 .social-links a:hover { color: var(--fg); }
 
+/* ─── Grid background ───────────────────────────────────────────────────── */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+}
+
 /* ─── Layout ────────────────────────────────────────────────────────────── */
 
 main {
@@ -99,6 +115,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 /* ─── Project Sidebar ───────────────────────────────────────────────────── */
@@ -298,12 +315,13 @@ footer {
   align-items: center;
   overflow: hidden;
   background: var(--bg);
+  z-index: 2;
 }
 
 .marquee-track {
   display: flex;
   white-space: nowrap;
-  animation: marquee 28s linear infinite;
+  animation: marquee 56s linear infinite;
 }
 
 .marquee-text {
