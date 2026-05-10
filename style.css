@@ -63,7 +63,62 @@ header {
   font-weight: var(--fontweight);
   letter-spacing: 0.01em;
   color: var(--textcolor);
+  cursor: pointer;
+  transition: opacity 0.2s;
 }
+
+.site-name:hover { opacity: 0.6; }
+
+/* ─── Bio panel ─────────────────────────────────────────────────────────── */
+
+.bio-panel {
+  position: fixed;
+  top: calc(var(--header-h) + 12px);
+  left: 24px;
+  width: 260px;
+  z-index: 20;
+  background: var(--bg);
+  border: 1px solid #2a2a2a;
+  padding: 16px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.bio-panel--hidden {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+#bio-text {
+  font-size: var(--fontsize);
+  font-weight: var(--fontweight);
+  color: var(--textcolor);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  text-transform: none;
+}
+
+.bio-close {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #444;
+  font-size: var(--fontsize);
+  font-family: "Inter", sans-serif;
+  font-weight: var(--fontweight);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.bio-close:hover { color: var(--textcolor); }
 
 .tagline {
   font-size: var(--fontsize);

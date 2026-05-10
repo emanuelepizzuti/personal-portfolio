@@ -16,6 +16,9 @@ const CONFIG = {
 
   // Footer ticker text.
   TICKER: 'weeeeeeeeeebsite under constructiooooooooooon ✦ ',
+
+  // Short bio shown when the site-name is clicked.
+  BIO: 'Designer and data visualizer based in Italy. Working at the intersection of information design, visual language, and interactive systems.',
 };
 
 /* ─── Sample data (used when SHEET_URL is empty) ─────────────────────────── */
@@ -59,6 +62,40 @@ function applyConfig() {
   const ticker = CONFIG.TICKER.repeat(12);
   document.querySelectorAll('.marquee-text').forEach(el => {
     el.textContent = ticker;
+  });
+
+  setupBio();
+}
+
+/* ─── Bio panel ──────────────────────────────────────────────────────────── */
+
+function setupBio() {
+  const nameEl   = document.getElementById('site-name');
+  const panel    = document.getElementById('bio-panel');
+  const bioText  = document.getElementById('bio-text');
+  const closeBtn = document.getElementById('bio-close');
+
+  bioText.textContent = CONFIG.BIO;
+
+  let panelOpen = false;
+
+  nameEl.addEventListener('mouseenter', () => {
+    nameEl.textContent = 'Who is Emanuele Pizzuti?';
+  });
+
+  nameEl.addEventListener('mouseleave', () => {
+    if (!panelOpen) nameEl.textContent = 'Emanuele Pizzuti';
+  });
+
+  nameEl.addEventListener('click', () => {
+    panelOpen = true;
+    panel.classList.remove('bio-panel--hidden');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    panelOpen = false;
+    panel.classList.add('bio-panel--hidden');
+    nameEl.textContent = 'Emanuele Pizzuti';
   });
 }
 
