@@ -6,7 +6,7 @@ const CONFIG = {
   SHEET_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTiNoGU6wb6qQE8OSTQGolNp9DSl2ic_RFhMn_B9QiVf8rtzKjuSfAeuYcwfPz91zBK148DiPY4Y-Uu/pub?gid=0&single=true&output=csv',
 
   // Your tagline shown in the header center.
-  TAGLINE: 'no',
+  // TAGLINE: 'no',
 
   // Social links — fill in your handles.
   LINKEDIN:  'https://www.linkedin.com/in/emanuelepizzuti/',
@@ -148,7 +148,7 @@ function renderSidebar(data) {
     a.rel = 'noopener noreferrer';
     a.innerHTML = `
       <div class="project-btn-name">${escHtml(project.name)}</div>
-      <div class="project-btn-platform">Explore on ${escHtml(project.platform)} -></div>
+      <div class="project-btn-platform">${escHtml(project.platform)} -></div>
     `;
     a.dataset.fields = JSON.stringify(project.fields);
 
@@ -208,10 +208,10 @@ function renderGraph(data) {
   const maxWeight = Math.max(...graphLinks.map(l => l.weight), 1);
 
   // Sqrt scale: node radius proportional to area, not radius
-  const rScale = d3.scaleSqrt().domain([1, Math.max(maxCount, 2)]).range([16, 48]);
+  const rScale = d3.scaleSqrt().domain([1, Math.max(maxCount, 2)]).range([12, 32]);
 
   // More shared projects → shorter distance (closer nodes)
-  const distScale = d3.scaleLinear().domain([1, maxWeight]).range([180, 60]);
+  const distScale = d3.scaleLinear().domain([1, maxWeight]).range([270, 60]);
 
   const sim = d3.forceSimulation(graphNodes)
     .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(l => distScale(l.weight)).strength(0.5))
@@ -239,9 +239,27 @@ function renderGraph(data) {
   nodeSelection.append('circle')
     .attr('r', d => rScale(d.count));
 
-  nodeSelection.append('text')
-    .attr('dy', d => rScale(d.count) + 14)
+  // Chip label: text first so we can measure it, rect inserted behind
+  const chipPadX = 8, chipPadY = 4;
+  const chips = nodeSelection.append('g')
+    .attr('class', 'node-chip')
+    .attr('transform', d => `translate(0, ${rScale(d.count) + 12})`);
+
+  chips.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
     .text(d => d.id);
+
+  chips.each(function() {
+    const g = d3.select(this);
+    const bbox = g.select('text').node().getBBox();
+    g.insert('rect', 'text')
+      .attr('x',      -(bbox.width  / 2 + chipPadX))
+      .attr('y',      -(bbox.height / 2 + chipPadY))
+      .attr('width',    bbox.width  + chipPadX * 2)
+      .attr('height',   bbox.height + chipPadY * 2)
+      .attr('rx',      (bbox.height + chipPadY * 2) / 2);
+  });
 
   function ticked() {
     linkSelection
@@ -289,7 +307,7 @@ function renderGraph(data) {
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
       // Inverse distance pull, kept gentle so repulsion doesn't spin nodes
-      const pull = 0.04 / (1 + dist * 0.014);
+      const pull = 0.4 / (1 + dist * 0.014);
       node.vx += dx * pull * alpha;
       node.vy += dy * pull * alpha;
     });
