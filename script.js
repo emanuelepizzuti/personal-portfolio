@@ -231,6 +231,20 @@ function renderGraph(data) {
     applySelection();
   });
 
+  // Cursor gravity — nodes are gently attracted toward the mouse
+  svg.on('mousemove', (event) => {
+    const [mx, my] = d3.pointer(event);
+    sim.force('cursor-x', d3.forceX(mx).strength(0.03))
+       .force('cursor-y', d3.forceY(my).strength(0.03))
+       .alphaTarget(0.15).restart();
+  });
+
+  svg.on('mouseleave', () => {
+    sim.force('cursor-x', null)
+       .force('cursor-y', null)
+       .alphaTarget(0).alpha(0.1).restart();
+  });
+
   // Drag to reposition nodes
   nodeSelection.call(
     d3.drag()
