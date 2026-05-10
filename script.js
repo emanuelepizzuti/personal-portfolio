@@ -230,6 +230,9 @@ function renderGraph(data) {
   // Pre-warm to convergence
   for (let i = 0; i < 300; i++) sim.tick();
 
+  // Snapshot resting positions so cursor attraction has somewhere to return to
+  graphNodes.forEach(node => { node.restX = node.x; node.restY = node.y; });
+
   const g = svg.append('g');
 
   linkSelection = g.append('g').selectAll('line')
@@ -249,30 +252,17 @@ function renderGraph(data) {
     .attr('dy', d => rScale(d.count) + 14)
     .text(d => d.id);
 
-  // Cursor position for position-nudge attraction
-  let cursorX = W / 2, cursorY = H / 2;
-  let cursorActive = false;
-
-  function ticked() {
-    // Position nudge: move nodes slightly toward cursor each frame.
-    // Direct position edit (not velocity) so momentum never builds → no rotation.
-    if (cursorActive) {
-      graphNodes.forEach(node => {
-        const dx   = cursorX - node.x;
-        const dy   = cursorY - node.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-        const pull = 0.003 / (1 + dist * 0.008);
-        node.x += dx * pull;
-        node.y += dy * pull;
-      });
-    }
+  function render() {
     linkSelection
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
     nodeSelection.attr('transform', d => `translate(${d.x},${d.y})`);
   }
 
-  sim.on('tick', render);
+  sim.on('tick', () => {
+    graphNodes.forEach(node => { node.restX = node.x; node.restY = node.y; });
+    render();
+  });
   render();
   sim.alpha(0.3).restart();
 
@@ -288,9 +278,12 @@ function renderGraph(data) {
       const dx   = cursorX - node.x;
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-      const pull = 0.018 / (1 + dist * 0.008);
+      const pull = 0.02 / (1 + dist * 0.01);
       node.x += dx * pull;
       node.y += dy * pull;
+      // Spring back toward resting position
+      node.x += (node.restX - node.x) * 0.08;
+      node.y += (node.restY - node.y) * 0.08;
     });
     render();
     cursorRaf = requestAnimationFrame(cursorFrame);
