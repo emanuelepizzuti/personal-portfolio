@@ -78,7 +78,7 @@ header {
   position: fixed;
   top: calc(var(--header-h) + 12px);
   left: 24px;
-  width: 420px;
+  width: 260px;
   z-index: 20;
   background: var(--bg);
   display: flex;
@@ -182,7 +182,7 @@ main {
 aside {
   position: absolute;
   top: 0; left: 0; bottom: 0;
-  width: 420px;
+  width: 360px;
   z-index: 5;
   padding: 24px 16px;
   overflow-y: auto;
