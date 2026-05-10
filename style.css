@@ -4,7 +4,8 @@
 
   --bg:           #0b0b0b;
   --fg:           #1c1c1c;
-  --textcolor:        #f2f2f2;
+  --primary:      #f2f2f2;
+  --secondary:    #565656;
   --border:       #1c1c1c;
   --hover-bg:     #1d1d1d;
 
@@ -24,6 +25,8 @@
   --fontsize:     12.4px;
   --fontweight:   200;
 
+  --line-height:  1.3;
+
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +34,7 @@
 html, body {
   height: 100%;
   background: var(--bg);
-  color: var(--textcolor);
+  color: var(--primary);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   text-transform: uppercase;
@@ -62,7 +65,7 @@ header {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
   letter-spacing: 0.01em;
-  color: var(--textcolor);
+  color: var(--primary);
   cursor: pointer;
   transition: opacity 0.2s;
 }
@@ -96,7 +99,7 @@ header {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
   text-transform: uppercase;
-  color: var(--textcolor);
+  color: var(--primary);
   letter-spacing: 0.04em;
   line-height: 1.7;
   text-transform: none;
@@ -117,11 +120,11 @@ header {
   transition: color 0.2s;
 }
 
-.bio-close:hover { color: var(--textcolor); }
+.bio-close:hover { color: var(--primary); }
 
 .tagline {
   font-size: var(--fontsize);
-  color: var(--textcolor);
+  color: var(--primary);
   font-style: italic;
   letter-spacing: 0.02em;
 }
@@ -134,7 +137,7 @@ header {
 }
 
 .social-links a {
-  color: var(--textcolor);
+  color: var(--primary);
   text-decoration: none;
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
@@ -218,7 +221,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 
 .loading-msg {
   font-size: var(--fontsize);
-  color: var(--textcolor);
+  color: var(--primary);
   letter-spacing: 0.06em;
   padding: 8px 4px;
 }
@@ -232,7 +235,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   padding: 10px 12px;
   background: transparent;
   border-radius: 99px;
-  color: var(--textcolor);
+  color: var(--primary);
   cursor: pointer;
   text-align: left;
   text-decoration: none;
@@ -243,7 +246,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .project-btn:hover,
 .project-btn.is-active {
   border-color: #333;
-  color: var(--textcolor);
+  color: var(--primary);
   background: var(--hover-bg);
   transform: translateX(6px);
   transition: background 0.4s, transform 0.8s ease;
@@ -294,6 +297,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .link {
   stroke: var(--edge-on);
   stroke-width: 1px;
+  opacity: .6;
   transition: stroke 0.3s ease;
 }
 
@@ -301,25 +305,23 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .link.is-dimmed  { stroke: #111; }
 
 .node circle {
-  fill: var(--node-off);
-  stroke: var(--node-stroke);
-  stroke-width: 1px;
+  fill: var(--primary);
   cursor: pointer;
   filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.3));
   transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
 }
 
 .node text {
-  fill: var(--label-off);
+  fill: var(--primary);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: var(--fontweight);
   font-size: var(--fontsize);
   letter-spacing: 0.06em;
+  text-transform: none;
   pointer-events: none;
   text-anchor: middle;
   transition: fill 0.3s ease;
-
 }
 
 .node circle:hover {
@@ -327,23 +329,27 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .node.is-active circle {
-  fill: var(--node-on);
-  stroke: var(--fg);
+  fill: var(--primary);
+  /* stroke: var(--fg); */
   filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.6));
 }
 
-.node.is-active text { fill: var(--label-on); }
+.node.is-active text { fill: var(--primary); }
 
 .node.is-dimmed circle {
   fill: #0f0f0f;
-  stroke: #181818;
+  /* stroke: #181818; */
+  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0));
 }
 
-.node.is-dimmed text { fill: #1c1c1c; }
+.node.is-dimmed text {
+  fill: #1c1c1c00;
+  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0));
+}
 
 .node.is-selected circle {
-  stroke: var(--fg);
-  stroke-width: 2px;
+  stroke: var(--primary);
+  /* stroke-width: 2px; */
 }
 
 .project-btn.is-filtered-in {
@@ -366,7 +372,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--fontsize);
-  color: var(--textcolor);
+  color: var(--primary);
   letter-spacing: 0.06em;
 }
 
