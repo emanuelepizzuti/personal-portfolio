@@ -249,32 +249,49 @@ function renderGraph(data) {
     .attr('dy', d => rScale(d.count) + 14)
     .text(d => d.id);
 
-  // Cursor position for position-nudge attraction
-  let cursorX = W / 2, cursorY = H / 2;
-  let cursorActive = false;
-
-  function ticked() {
-    // Position nudge: move nodes slightly toward cursor each frame.
-    // Direct position edit (not velocity) so momentum never builds → no rotation.
-    if (cursorActive) {
-      graphNodes.forEach(node => {
-        const dx   = cursorX - node.x;
-        const dy   = cursorY - node.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-        const pull = 0.02 / (1 + dist * 0.008);
-        node.x += dx * pull;
-        node.y += dy * pull;
-      });
-    }
+  function render() {
     linkSelection
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
     nodeSelection.attr('transform', d => `translate(${d.x},${d.y})`);
   }
 
-  sim.on('tick', ticked);
-  ticked();
+  sim.on('tick', render);
+  render();
   sim.alpha(0.3).restart();
+
+  // ── Cursor attraction via independent RAF ──────────────────────────────
+  // Runs completely outside the D3 simulation so it never heats up the
+  // physics engine — no charge/repulsion runs, no rotation possible.
+  let cursorX = W / 2, cursorY = H / 2;
+  let cursorActive = false;
+  let cursorRaf = null;
+
+  function cursorFrame() {
+    graphNodes.forEach(node => {
+      const dx   = cursorX - node.x;
+      const dy   = cursorY - node.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+      const pull = 0.018 / (1 + dist * 0.008);
+      node.x += dx * pull;
+      node.y += dy * pull;
+    });
+    render();
+    cursorRaf = requestAnimationFrame(cursorFrame);
+  }
+
+  svg.on('mousemove', (event) => {
+    [cursorX, cursorY] = d3.pointer(event);
+    if (!cursorActive) {
+      cursorActive = true;
+      cursorRaf = requestAnimationFrame(cursorFrame);
+    }
+  });
+
+  svg.on('mouseleave', () => {
+    cursorActive = false;
+    if (cursorRaf) { cancelAnimationFrame(cursorRaf); cursorRaf = null; }
+  });
 
   // Node click → single select (click same node again to deselect)
   nodeSelection.on('click', (event, d) => {
@@ -292,17 +309,6 @@ function renderGraph(data) {
   svg.on('click', () => {
     selectedNodes.clear();
     applySelection();
-  });
-
-  svg.on('mousemove', (event) => {
-    [cursorX, cursorY] = d3.pointer(event);
-    cursorActive = true;
-    sim.alphaTarget(0.2).restart();
-  });
-
-  svg.on('mouseleave', () => {
-    cursorActive = false;
-    sim.alphaTarget(0).alpha(0.15).restart();
   });
 
   // Drag to reposition nodes
