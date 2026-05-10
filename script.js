@@ -46,12 +46,27 @@ let selectedNodes = new Set();
   projects = await loadProjects();
   renderSidebar(projects);
   renderGraph(projects);
+  setupGlowShadow();
 })();
+
+/* ─── Cursor-following glow shadow ───────────────────────────────────────── */
+
+function setupGlowShadow() {
+  const root = document.documentElement;
+  const MAX  = 6;
+
+  document.addEventListener('mousemove', e => {
+    const dx = -((e.clientX / window.innerWidth)  - 0.5) * 2 * MAX;
+    const dy = -((e.clientY / window.innerHeight) - 0.5) * 2 * MAX;
+    root.style.setProperty('--shadow-dx', `${dx}px`);
+    root.style.setProperty('--shadow-dy', `${dy}px`);
+  });
+}
 
 /* ─── Config application ──────────────────────────────────────────────────── */
 
 function applyConfig() {
-  document.getElementById('tagline').textContent = CONFIG.TAGLINE;
+  // document.getElementById('tagline').textContent = CONFIG.TAGLINE;
 
   document.getElementById('link-linkedin').href  = CONFIG.LINKEDIN;
   document.getElementById('link-instagram').href = CONFIG.INSTAGRAM;
@@ -90,12 +105,15 @@ function setupBio() {
   function closeBio() {
     panelOpen = false;
     panel.classList.add('bio-panel--hidden');
+    nameEl.classList.remove('site-name--active');
     nameEl.textContent = 'Emanuele Pizzuti';
   }
 
   nameEl.addEventListener('click', () => {
-    if (panelOpen) { closeBio(); return; }
+    if (panelOpen) return;
     panelOpen = true;
+    nameEl.textContent = 'Who is Emanuele Pizzuti?';
+    nameEl.classList.add('site-name--active');
     panel.classList.remove('bio-panel--hidden');
   });
 
@@ -148,7 +166,7 @@ function renderSidebar(data) {
     a.rel = 'noopener noreferrer';
     a.innerHTML = `
       <div class="project-btn-name">${escHtml(project.name)}</div>
-      <div class="project-btn-platform">Explore on ${escHtml(project.platform)} -></div>
+      <div class="project-btn-platform">${escHtml(project.platform)} -></div>
     `;
     a.dataset.fields = JSON.stringify(project.fields);
 
