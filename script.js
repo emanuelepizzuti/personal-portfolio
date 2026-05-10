@@ -249,7 +249,23 @@ function renderGraph(data) {
     .attr('dy', d => rScale(d.count) + 14)
     .text(d => d.id);
 
-  function render() {
+  // Cursor position for position-nudge attraction
+  let cursorX = W / 2, cursorY = H / 2;
+  let cursorActive = false;
+
+  function ticked() {
+    // Position nudge: move nodes slightly toward cursor each frame.
+    // Direct position edit (not velocity) so momentum never builds → no rotation.
+    if (cursorActive) {
+      graphNodes.forEach(node => {
+        const dx   = cursorX - node.x;
+        const dy   = cursorY - node.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+        const pull = 0.003 / (1 + dist * 0.008);
+        node.x += dx * pull;
+        node.y += dy * pull;
+      });
+    }
     linkSelection
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
