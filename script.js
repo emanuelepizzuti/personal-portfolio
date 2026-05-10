@@ -218,6 +218,7 @@ function renderGraph(data) {
     .force('charge',    d3.forceManyBody().strength(d => -80 / d.count))
     .force('center',    d3.forceCenter(W / 2, H / 2))
     .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
+    .velocityDecay(0.6)
     .stop();
 
   // Pre-warm to convergence
@@ -291,9 +292,6 @@ function renderGraph(data) {
       const pull = 0.06 / (1 + dist * 0.012);
       node.vx += dx * pull * alpha;
       node.vy += dy * pull * alpha;
-      // Subtle brownian wobble
-      node.vx += (Math.random() - 0.5) * 0.02 * alpha;
-      node.vy += (Math.random() - 0.5) * 0.02 * alpha;
     });
   });
 
