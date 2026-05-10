@@ -175,7 +175,7 @@ function renderGraph(data) {
 
   const sim = d3.forceSimulation(graphNodes)
     .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(l => distScale(l.weight)).strength(0.5))
-    .force('charge',    d3.forceManyBody().strength(d => -160 / d.count))
+    .force('charge',    d3.forceManyBody().strength(d => -80 / d.count))
     .force('center',    d3.forceCenter(W / 2, H / 2))
     .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
     .stop();
@@ -248,9 +248,9 @@ function renderGraph(data) {
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
       // Exponential falloff: strong nearby, fades smoothly over ~300px
-      const strength = 0.08 * Math.exp(-dist / 300);
+      const strength = 0.04 * Math.exp(-dist / 200);
       // Heavier nodes (more projects) respond more sluggishly
-      const mass = 1 + (node.count - 1) * 0.2;
+      const mass = 1 + (node.count - 1) * 0.1;
       node.vx += dx * strength * alpha / mass;
       node.vy += dy * strength * alpha / mass;
       // Brownian noise for organic wobble

@@ -4,9 +4,9 @@
 
   --bg:           #0b0b0b;
   --fg:           #1c1c1c;
-  --muted:        #f2f2f2;
+  --textcolor:        #f2f2f2;
   --border:       #1c1c1c;
-  --hover-bg:     #bababa;
+  --hover-bg:     #1d1d1d;
 
   --node-off:     #c1c1c1;
   --node-on:      #f0ede8;
@@ -21,8 +21,8 @@
   --header-h:     58px;
   --footer-h:     58px;
 
-  --fontsize:     12px;
-  --fontweight:   300;
+  --fontsize:     11px;
+  --fontweight:   200;
 
 }
 
@@ -31,7 +31,7 @@
 html, body {
   height: 100%;
   background: var(--bg);
-  color: var(--fg);
+  color: var(--textcolor);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   text-transform: uppercase;
@@ -62,12 +62,12 @@ header {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
   letter-spacing: 0.01em;
-  color: var(--muted);
+  color: var(--textcolor);
 }
 
 .tagline {
   font-size: var(--fontsize);
-  color: var(--muted);
+  color: var(--textcolor);
   font-style: italic;
   letter-spacing: 0.02em;
 }
@@ -80,7 +80,7 @@ header {
 }
 
 .social-links a {
-  color: var(--muted);
+  color: var(--textcolor);
   text-decoration: none;
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
@@ -164,7 +164,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 
 .loading-msg {
   font-size: var(--fontsize);
-  color: var(--muted);
+  color: var(--textcolor);
   letter-spacing: 0.06em;
   padding: 8px 4px;
 }
@@ -177,8 +177,8 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   height: 34px;
   padding: 10px 12px;
   background: transparent;
-  border-radius: 3px;
-  color: var(--muted);
+  border-radius: 99px;
+  color: var(--textcolor);
   cursor: pointer;
   text-align: left;
   text-decoration: none;
@@ -189,10 +189,10 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .project-btn:hover,
 .project-btn.is-active {
   border-color: #333;
-  color: var(--fg);
+  color: var(--textcolor);
   background: var(--hover-bg);
   transform: translateX(6px);
-  transition: transform 0.8s ease;
+  transition: background 0.4s, transform 0.8s ease;
 }
 
 .project-btn-name {
@@ -294,12 +294,17 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 
 .project-btn.is-filtered-in {
   transform: translateX(8px);
-  color: var(--fg);
+}
+
+.project-btn.is-filtered-in .project-btn-name {
+  font-weight: 500;
 }
 
 .project-btn.is-filtered-out {
   opacity: 0.25;
   pointer-events: none;
+    font-weight: var(--fontweight);
+
 }
 
 .graph-empty {
@@ -307,7 +312,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--fontsize);
-  color: var(--muted);
+  color: var(--textcolor);
   letter-spacing: 0.06em;
 }
 
