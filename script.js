@@ -220,7 +220,7 @@ function renderGraph(data) {
     .force('collision', d3.forceCollide().radius(d => {
       const r          = rScale(d.count);
       const labelHalfW = (d.id.length * 7 + 16) / 2; // approx half-width of text label
-      const labelBaseY = r + 20;                       // distance from centre to label bottom
+      const labelBaseY = r + 60;                       // distance from centre to label bottom
       // Euclidean distance from node centre to label corner, plus a small gap
       return Math.sqrt(labelHalfW * labelHalfW + labelBaseY * labelBaseY) + 8;
     }))
@@ -249,7 +249,7 @@ function renderGraph(data) {
     .attr('r', d => rScale(d.count));
 
   nodeSelection.append('text')
-    .attr('dy', d => rScale(d.count) + 14)
+    .attr('dy', d => rScale(d.count) + 18)
     .text(d => d.id);
 
   function render() {
@@ -282,8 +282,8 @@ function renderGraph(data) {
       node.x += dx * pull;
       node.y += dy * pull;
       // Spring back toward resting position
-      node.x += (node.restX - node.x) * 0.08;
-      node.y += (node.restY - node.y) * 0.08;
+      node.x += (node.restX - node.x) * 0.06;
+      node.y += (node.restY - node.y) * 0.06;
     });
     render();
     cursorRaf = requestAnimationFrame(cursorFrame);
