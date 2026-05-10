@@ -218,7 +218,7 @@ function renderGraph(data) {
     .force('charge',    d3.forceManyBody().strength(d => -80 / d.count))
     .force('center',    d3.forceCenter(W / 2, H / 2))
     .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 22))
-    .velocityDecay(0.6)
+    .velocityDecay(0.75)
     .stop();
 
   // Pre-warm to convergence
@@ -280,16 +280,16 @@ function renderGraph(data) {
   sim.force('cursor', (alpha) => {
     if (!cursorActive) return;
 
-    // Lerp cursor toward pointer for smooth trailing feel
-    cursorX += (targetX - cursorX) * 0.05;
-    cursorY += (targetY - cursorY) * 0.05;
+    // Track cursor directly — lerping created a sweeping arc that caused rotation
+    cursorX = targetX;
+    cursorY = targetY;
 
     graphNodes.forEach(node => {
       const dx   = cursorX - node.x;
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-      // Inverse distance: closer = stronger attraction, uniform across all nodes
-      const pull = 0.06 / (1 + dist * 0.012);
+      // Inverse distance pull, kept gentle so repulsion doesn't spin nodes
+      const pull = 0.04 / (1 + dist * 0.014);
       node.vx += dx * pull * alpha;
       node.vy += dy * pull * alpha;
     });
