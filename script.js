@@ -243,7 +243,23 @@ function renderGraph(data) {
     .attr('dy', d => rScale(d.count) + 14)
     .text(d => d.id);
 
+  // Cursor position for position-nudge attraction
+  let cursorX = W / 2, cursorY = H / 2;
+  let cursorActive = false;
+
   function ticked() {
+    // Position nudge: move nodes slightly toward cursor each frame.
+    // Direct position edit (not velocity) so momentum never builds → no rotation.
+    if (cursorActive) {
+      graphNodes.forEach(node => {
+        const dx   = cursorX - node.x;
+        const dy   = cursorY - node.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+        const pull = 0.003 / (1 + dist * 0.008);
+        node.x += dx * pull;
+        node.y += dy * pull;
+      });
+    }
     linkSelection
       .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
       .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
@@ -251,7 +267,7 @@ function renderGraph(data) {
   }
 
   sim.on('tick', ticked);
-  ticked(); // render pre-warmed positions immediately before simulation restarts
+  ticked();
   sim.alpha(0.3).restart();
 
   // Node click → single select (click same node again to deselect)
@@ -272,31 +288,8 @@ function renderGraph(data) {
     applySelection();
   });
 
-  // Organic cursor gravity
-  let targetX = W / 2, targetY = H / 2;
-  let cursorX  = W / 2, cursorY  = H / 2;
-  let cursorActive = false;
-
-  sim.force('cursor', (alpha) => {
-    if (!cursorActive) return;
-
-    // Track cursor directly — lerping created a sweeping arc that caused rotation
-    cursorX = targetX;
-    cursorY = targetY;
-
-    graphNodes.forEach(node => {
-      const dx   = cursorX - node.x;
-      const dy   = cursorY - node.y;
-      const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-      // Inverse distance pull, kept gentle so repulsion doesn't spin nodes
-      const pull = 0.04 / (1 + dist * 0.014);
-      node.vx += dx * pull * alpha;
-      node.vy += dy * pull * alpha;
-    });
-  });
-
   svg.on('mousemove', (event) => {
-    [targetX, targetY] = d3.pointer(event);
+    [cursorX, cursorY] = d3.pointer(event);
     cursorActive = true;
     sim.alphaTarget(0.2).restart();
   });
