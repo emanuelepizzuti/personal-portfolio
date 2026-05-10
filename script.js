@@ -255,7 +255,7 @@ function renderGraph(data) {
         const dx   = cursorX - node.x;
         const dy   = cursorY - node.y;
         const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-        const pull = 0.003 / (1 + dist * 0.008);
+        const pull = 0.02 / (1 + dist * 0.008);
         node.x += dx * pull;
         node.y += dy * pull;
       });
