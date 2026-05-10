@@ -4,8 +4,7 @@
 
   --bg:           #0b0b0b;
   --fg:           #1c1c1c;
-  --primary:      #f2f2f2;
-  --secondary:    #565656;
+  --textcolor:        #f2f2f2;
   --border:       #1c1c1c;
   --hover-bg:     #1d1d1d;
 
@@ -25,8 +24,6 @@
   --fontsize:     12.4px;
   --fontweight:   200;
 
-  --line-height:  1.3;
-
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,14 +31,13 @@
 html, body {
   height: 100%;
   background: var(--bg);
-  color: var(--primary);
+  color: var(--textcolor);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   text-transform: uppercase;
   font-weight: var(--fontweight);
   font-size: var(--fontsize);
   overflow: hidden;
-  line-height: var(--line-height);
 }
 
 /* ─── Header ────────────────────────────────────────────────────────────── */
@@ -50,31 +46,28 @@ header {
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--header-h);
-  display: flex;
-  /* grid-template-columns: 1fr 1fr 1fr; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 0 24px;
   z-index: 10;
   background: var(--bg);
 }
 
-/* .header-col.left  { display: flex; align-items: center; }
+.header-col.left  { display: flex; align-items: center; }
 .header-col.center { display: flex; justify-content: center; }
-.header-col.right  { display: flex; justify-content: flex-end; } */
+.header-col.right  { display: flex; justify-content: flex-end; }
 
 .site-name {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
   letter-spacing: 0.01em;
-  color: var(--primary);
+  color: var(--textcolor);
   cursor: pointer;
-  /* transition: opacity 0.2s; */
+  transition: opacity 0.2s;
 }
 
-.site-name:hover {
-  text-decoration: underline;
-}
+/* .site-name:hover { transition: ; } */
 
 /* ─── Bio panel ─────────────────────────────────────────────────────────── */
 
@@ -82,7 +75,7 @@ header {
   position: fixed;
   top: calc(var(--header-h) + 12px);
   left: 24px;
-  width: 420px;
+  width: 260px;
   z-index: 20;
   background: var(--bg);
   display: flex;
@@ -91,10 +84,6 @@ header {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.25s ease, transform 0.25s ease;
-  font-size: var(--fontsize);
-  font-weight: var(--fontweight);
-  text-transform: uppercase;
-  line-height: var(--line-height);
 }
 
 .bio-panel--hidden {
@@ -106,10 +95,11 @@ header {
 #bio-text {
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
-  color: var(--primary);
-  letter-spacing: 0.04em;
-  line-height: var(--line-height);
   text-transform: uppercase;
+  color: var(--textcolor);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  text-transform: none;
 }
 
 .bio-close {
@@ -127,11 +117,11 @@ header {
   transition: color 0.2s;
 }
 
-.bio-close:hover { color: var(--primary); }
+.bio-close:hover { color: var(--textcolor); }
 
 .tagline {
   font-size: var(--fontsize);
-  color: var(--primary);
+  color: var(--textcolor);
   font-style: italic;
   letter-spacing: 0.02em;
 }
@@ -144,7 +134,7 @@ header {
 }
 
 .social-links a {
-  color: var(--primary);
+  color: var(--textcolor);
   text-decoration: none;
   font-size: var(--fontsize);
   font-weight: var(--fontweight);
@@ -153,10 +143,7 @@ header {
   transition: color 0.2s ease;
 }
 
-.social-links a:hover { 
-  text-decoration: underline;
-  /* color: var(--fg); */
- }
+.social-links a:hover { color: var(--fg); }
 
 /* ─── Grid background ───────────────────────────────────────────────────── */
 
@@ -167,9 +154,9 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 46px 46px;
   mask-image: radial-gradient(ellipse 30% 50% at 50% 50%, black 0%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 30% 50% at 50% 50%, black 0%, transparent 100%);
 }
@@ -192,7 +179,7 @@ main {
 aside {
   position: absolute;
   top: 0; left: 0; bottom: 0;
-  width: 420px;
+  width: 360px;
   z-index: 5;
   padding: 24px 16px;
   overflow-y: auto;
@@ -202,6 +189,7 @@ aside {
   align-items: left;
   justify-content: center;
   gap: 6px;
+  
 }
 
 #how-to {
@@ -221,8 +209,7 @@ aside {
   font-optical-sizing: auto;
   font-weight: var(--fontweight);
   text-align: right;
-  line-height: var(--line-height);
-  color: var(--secondary);
+  
 }
 
 aside::-webkit-scrollbar { width: 4px; }
@@ -231,7 +218,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 
 .loading-msg {
   font-size: var(--fontsize);
-  color: var(--primary);
+  color: var(--textcolor);
   letter-spacing: 0.06em;
   padding: 8px 4px;
 }
@@ -239,14 +226,13 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .project-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 20px;
   width: fit-content;
   height: 34px;
   padding: 10px 12px;
   background: transparent;
   border-radius: 99px;
-  color: var(--primary);
+  color: var(--textcolor);
   cursor: pointer;
   text-align: left;
   text-decoration: none;
@@ -257,7 +243,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .project-btn:hover,
 .project-btn.is-active {
   border-color: #333;
-  color: var(--primary);
+  color: var(--textcolor);
   background: var(--hover-bg);
   transform: translateX(6px);
   transition: background 0.4s, transform 0.8s ease;
@@ -273,12 +259,11 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .project-btn-platform {
+  margin-top: 3px;
   font-size: var(--fontsize);
   color: #2e2e2e;
   transition: color 0.2s;
   display: none;
-  line-height: var(--line-height);
-
 }
 
 .project-btn:hover .project-btn-platform,
@@ -309,7 +294,6 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .link {
   stroke: var(--edge-on);
   stroke-width: 1px;
-  opacity: .6;
   transition: stroke 0.3s ease;
 }
 
@@ -317,30 +301,25 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 .link.is-dimmed  { stroke: #111; }
 
 .node circle {
-  fill: var(--primary);
+  fill: var(--node-off);
+  stroke: var(--node-stroke);
+  stroke-width: 1px;
   cursor: pointer;
   filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.3));
   transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
 }
 
-.node-chip rect {
-  fill: #141414;
-  stroke: #2e2e2e;
-  stroke-width: 1px;
-  pointer-events: none;
-  transition: fill 0.3s ease, stroke 0.3s ease, opacity 0.3s ease;
-}
-
-.node-chip text {
-  fill: var(--secondary);
+.node text {
+  fill: var(--label-off);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: var(--fontweight);
   font-size: var(--fontsize);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   pointer-events: none;
-  transition: fill 0.3s ease, opacity 0.3s ease;
+  text-anchor: middle;
+  transition: fill 0.3s ease;
+
 }
 
 .node circle:hover {
@@ -348,27 +327,23 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .node.is-active circle {
-  fill: var(--primary);
-  /* stroke: var(--fg); */
+  fill: var(--node-on);
+  stroke: var(--fg);
   filter: drop-shadow(0px 0px 30px rgba(255,255,255,0.6));
 }
 
-.node.is-active .node-chip rect {
-  fill: #1e1e1e;
-  stroke: #484848;
-}
-.node.is-active .node-chip text { fill: var(--primary); }
+.node.is-active text { fill: var(--label-on); }
 
 .node.is-dimmed circle {
   fill: #0f0f0f;
-  filter: drop-shadow(0px 0px 30px rgba(255,255,255,0));
+  stroke: #181818;
 }
-.node.is-dimmed .node-chip rect { fill: #0d0d0d; stroke: #181818; opacity: 0.4; }
-.node.is-dimmed .node-chip text { fill: #2a2a2a; }
+
+.node.is-dimmed text { fill: #1c1c1c; }
 
 .node.is-selected circle {
-  stroke: var(--primary);
-  /* stroke-width: 2px; */
+  stroke: var(--fg);
+  stroke-width: 2px;
 }
 
 .project-btn.is-filtered-in {
@@ -376,13 +351,14 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .project-btn.is-filtered-in .project-btn-name {
-  /* font-weight: 500; */
+  font-weight: 500;
 }
 
 .project-btn.is-filtered-out {
   opacity: 0.25;
   pointer-events: none;
-  font-weight: var(--fontweight);
+    font-weight: var(--fontweight);
+
 }
 
 .graph-empty {
@@ -390,7 +366,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: var(--fontsize);
-  color: var(--primary);
+  color: var(--textcolor);
   letter-spacing: 0.06em;
 }
 
