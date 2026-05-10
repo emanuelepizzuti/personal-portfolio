@@ -236,7 +236,7 @@ function renderGraph(data) {
   let cursorX  = W / 2, cursorY  = H / 2;
   let cursorActive = false;
 
-  sim.force('cursor', () => {
+  sim.force('cursor', (alpha) => {
     if (!cursorActive) return;
 
     // Lerp cursor toward pointer for smooth trailing feel
@@ -247,15 +247,15 @@ function renderGraph(data) {
       const dx   = cursorX - node.x;
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-      // Gravity-well falloff: strong up close, fades with distance
-      const pull = Math.min(1400 / (dist * dist), 1.2);
+      // Exponential falloff: strong nearby, fades smoothly over ~300px
+      const strength = 0.18 * Math.exp(-dist / 300);
       // Heavier nodes (more projects) respond more sluggishly
       const mass = 1 + (node.count - 1) * 0.4;
-      node.vx += (dx / dist) * pull * 0.018 / mass;
-      node.vy += (dy / dist) * pull * 0.018 / mass;
+      node.vx += dx * strength * alpha / mass;
+      node.vy += dy * strength * alpha / mass;
       // Brownian noise for organic wobble
-      node.vx += (Math.random() - 0.5) * 0.12;
-      node.vy += (Math.random() - 0.5) * 0.12;
+      node.vx += (Math.random() - 0.5) * 0.08 * alpha;
+      node.vy += (Math.random() - 0.5) * 0.08 * alpha;
     });
   });
 
