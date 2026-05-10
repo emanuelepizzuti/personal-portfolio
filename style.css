@@ -209,7 +209,8 @@ aside {
 
 #how-to {
   position: absolute;
-  top: 0; left: auto; right: 0; bottom: 0;
+  left: auto;
+  right: 12px;
   width: 420px;
   z-index: 5;
   overflow-y: auto;
