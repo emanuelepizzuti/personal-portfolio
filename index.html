@@ -36,9 +36,6 @@
     <aside id="project-list">
       <div id="loading-msg" class="loading-msg">loading projects…</div>
     </aside>
-    <aside id="how-to">bla bla
-      <!-- <div id="loading-msg" class="loading-msg">loading projects…</div> -->
-    </aside>
     <section id="graph-section">
       <svg id="graph"></svg>
       <div id="graph-empty" class="graph-empty hidden">No fields to display.</div>
@@ -52,28 +49,30 @@
     </div>
   </footer>
 
-  <!-- Grainy glow filter for graph nodes -->
-  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Grainy glow filter for graph nodes (must NOT be display:none — use position trick instead) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <filter id="glow-grain" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+      <!-- default node glow -->
+      <filter id="glow-grain" x="-70%" y="-70%" width="240%" height="240%" color-interpolation-filters="sRGB">
         <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"/>
-        <feFlood flood-color="white" flood-opacity="1" result="glowColor"/>
-        <feComposite in="glowColor" in2="blur" operator="in" result="glow"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="noise"/>
-        <feDisplacementMap in="glow" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="grainedGlow"/>
+        <feFlood flood-color="white" flood-opacity="0.6" result="white"/>
+        <feComposite in="white" in2="blur" operator="in" result="glow"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
+        <feDisplacementMap in="glow" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="grainy"/>
         <feMerge>
-          <feMergeNode in="grainedGlow"/>
+          <feMergeNode in="grainy"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
       </filter>
-      <filter id="glow-grain-active" x="-60%" y="-60%" width="220%" height="220%" color-interpolation-filters="sRGB">
+      <!-- active / hover node glow (brighter, bigger) -->
+      <filter id="glow-grain-active" x="-70%" y="-70%" width="240%" height="240%" color-interpolation-filters="sRGB">
         <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="blur"/>
-        <feFlood flood-color="white" flood-opacity="1" result="glowColor"/>
-        <feComposite in="glowColor" in2="blur" operator="in" result="glow"/>
-        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="noise"/>
-        <feDisplacementMap in="glow" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="grainedGlow"/>
+        <feFlood flood-color="white" flood-opacity="0.9" result="white"/>
+        <feComposite in="white" in2="blur" operator="in" result="glow"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
+        <feDisplacementMap in="glow" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G" result="grainy"/>
         <feMerge>
-          <feMergeNode in="grainedGlow"/>
+          <feMergeNode in="grainy"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
       </filter>
