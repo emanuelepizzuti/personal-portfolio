@@ -231,18 +231,45 @@ function renderGraph(data) {
     applySelection();
   });
 
-  // Cursor gravity — nodes are gently attracted toward the mouse
+  // Organic cursor gravity
+  let targetX = W / 2, targetY = H / 2;
+  let cursorX  = W / 2, cursorY  = H / 2;
+  let cursorActive = false;
+
+  sim.force('cursor', () => {
+    if (!cursorActive) return;
+
+    // Lerp cursor toward pointer for smooth trailing feel
+    cursorX += (targetX - cursorX) * 0.06;
+    cursorY += (targetY - cursorY) * 0.06;
+
+    graphNodes.forEach(node => {
+      const dx   = cursorX - node.x;
+      const dy   = cursorY - node.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) + 1;
+      // Gravity-well falloff: strong up close, fades with distance
+      const pull = Math.min(1400 / (dist * dist), 1.2);
+      // Heavier nodes (more projects) respond more sluggishly
+      const mass = 1 + (node.count - 1) * 0.4;
+      node.vx += (dx / dist) * pull * 0.018 / mass;
+      node.vy += (dy / dist) * pull * 0.018 / mass;
+      // Brownian noise for organic wobble
+      node.vx += (Math.random() - 0.5) * 0.12;
+      node.vy += (Math.random() - 0.5) * 0.12;
+    });
+  });
+
   svg.on('mousemove', (event) => {
-    const [mx, my] = d3.pointer(event);
-    sim.force('cursor-x', d3.forceX(mx).strength(0.03))
-       .force('cursor-y', d3.forceY(my).strength(0.03))
-       .alphaTarget(0.15).restart();
+    [targetX, targetY] = d3.pointer(event);
+    if (!cursorActive) {
+      cursorActive = true;
+      sim.alphaTarget(0.2).restart();
+    }
   });
 
   svg.on('mouseleave', () => {
-    sim.force('cursor-x', null)
-       .force('cursor-y', null)
-       .alphaTarget(0).alpha(0.1).restart();
+    cursorActive = false;
+    sim.alphaTarget(0).alpha(0.15).restart();
   });
 
   // Drag to reposition nodes
