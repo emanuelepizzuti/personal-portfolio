@@ -87,16 +87,19 @@ function setupBio() {
     if (!panelOpen) nameEl.textContent = 'Emanuele Pizzuti';
   });
 
+  function closeBio() {
+    panelOpen = false;
+    panel.classList.add('bio-panel--hidden');
+    nameEl.textContent = 'Emanuele Pizzuti';
+  }
+
   nameEl.addEventListener('click', () => {
+    if (panelOpen) { closeBio(); return; }
     panelOpen = true;
     panel.classList.remove('bio-panel--hidden');
   });
 
-  closeBtn.addEventListener('click', () => {
-    panelOpen = false;
-    panel.classList.add('bio-panel--hidden');
-    nameEl.textContent = 'Emanuele Pizzuti';
-  });
+  closeBtn.addEventListener('click', closeBio);
 }
 
 /* ─── Data loading ───────────────────────────────────────────────────────── */
@@ -277,22 +280,20 @@ function renderGraph(data) {
     if (!cursorActive) return;
 
     // Lerp cursor toward pointer for smooth trailing feel
-    cursorX += (targetX - cursorX) * 0.03;
-    cursorY += (targetY - cursorY) * 0.03;
+    cursorX += (targetX - cursorX) * 0.05;
+    cursorY += (targetY - cursorY) * 0.05;
 
     graphNodes.forEach(node => {
       const dx   = cursorX - node.x;
       const dy   = cursorY - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) + 1;
-      // Exponential falloff: strong nearby, fades smoothly over ~300px
-      const strength = 0.04 * Math.exp(-dist / 200);
-      // Heavier nodes (more projects) respond more sluggishly
-      const mass = 1 + (node.count - 1) * 0.1;
-      node.vx += dx * strength * alpha / mass;
-      node.vy += dy * strength * alpha / mass;
-      // Brownian noise for organic wobble
-      node.vx += (Math.random() - 0.5) * 0.04 * alpha;
-      node.vy += (Math.random() - 0.5) * 0.04 * alpha;
+      // Inverse distance: closer = stronger attraction, uniform across all nodes
+      const pull = 0.06 / (1 + dist * 0.012);
+      node.vx += dx * pull * alpha;
+      node.vy += dy * pull * alpha;
+      // Subtle brownian wobble
+      node.vx += (Math.random() - 0.5) * 0.02 * alpha;
+      node.vy += (Math.random() - 0.5) * 0.02 * alpha;
     });
   });
 
