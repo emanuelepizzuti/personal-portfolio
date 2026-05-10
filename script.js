@@ -217,7 +217,13 @@ function renderGraph(data) {
     .force('link',      d3.forceLink(graphLinks).id(d => d.id).distance(l => distScale(l.weight)).strength(0.5))
     .force('charge',    d3.forceManyBody().strength(d => -80 / d.count))
     .force('center',    d3.forceCenter(W / 2, H / 2))
-    .force('collision', d3.forceCollide().radius(d => rScale(d.count) + 4))
+    .force('collision', d3.forceCollide().radius(d => {
+      const r          = rScale(d.count);
+      const labelHalfW = (d.id.length * 7 + 16) / 2; // approx half-width of text label
+      const labelBaseY = r + 20;                       // distance from centre to label bottom
+      // Euclidean distance from node centre to label corner, plus a small gap
+      return Math.sqrt(labelHalfW * labelHalfW + labelBaseY * labelBaseY) + 8;
+    }))
     .velocityDecay(0.75)
     .stop();
 
