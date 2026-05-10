@@ -220,9 +220,9 @@ function renderGraph(data) {
     .force('collision', d3.forceCollide().radius(d => {
       const r          = rScale(d.count);
       const labelHalfW = (d.id.length * 7 + 16) / 2; // approx half-width of text label
-      const labelBaseY = r + 60;                       // distance from centre to label bottom
+      const labelBaseY = r + 20;                       // distance from centre to label bottom
       // Euclidean distance from node centre to label corner, plus a small gap
-      return Math.sqrt(labelHalfW * labelHalfW + labelBaseY * labelBaseY) + 8;
+      return Math.sqrt(labelHalfW * labelHalfW + labelBaseY * labelBaseY) + 16;
     }))
     .velocityDecay(0.75)
     .stop();
