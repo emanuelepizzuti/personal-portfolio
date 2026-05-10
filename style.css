@@ -21,6 +21,8 @@
   --header-h:     58px;
   --footer-h:     58px;
 
+  --fontsize:     13px
+
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,8 +31,10 @@ html, body {
   height: 100%;
   background: var(--bg);
   color: var(--fg);
-  font-family: "Archivo", sans-serif;
-  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: var(--fontsize);
   overflow: hidden;
 }
 
@@ -53,14 +57,14 @@ header {
 .header-col.right  { display: flex; justify-content: flex-end; }
 
 .site-name {
-  font-size: 12px;
+  font-size: var(--fontsize);
   font-weight: 500;
   letter-spacing: 0.01em;
   color: var(--fg);
 }
 
 .tagline {
-  font-size: 12px;
+  font-size: var(--fontsize);
   color: var(--muted);
   font-style: italic;
   letter-spacing: 0.02em;
@@ -76,7 +80,7 @@ header {
 .social-links a {
   color: var(--muted);
   text-decoration: none;
-  font-size: 12px;
+  font-size: var(--fontsize);
   font-weight: 400;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -115,12 +119,32 @@ aside {
   
 }
 
+#how-to {
+  position: absolute;
+  top: 0; left: auto; right: 0; bottom: 0;
+  width: 360px;
+  z-index: 5;
+  padding: 24px 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  -ms-flex-align: center;
+  align-items: right;
+  justify-content: center;
+  gap: 6px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  text-align: right;
+  
+}
+
 aside::-webkit-scrollbar { width: 4px; }
 aside::-webkit-scrollbar-track { background: transparent; }
 aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .loading-msg {
-  font-size: 12px;
+  font-size: var(--fontsize);
   color: var(--muted);
   letter-spacing: 0.06em;
   padding: 8px 4px;
@@ -152,15 +176,17 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 }
 
 .project-btn-name {
-  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
   font-weight: 400;
+  font-size: var(--fontsize);
   letter-spacing: 0.02em;
   line-height: 1.4;
 }
 
 .project-btn-platform {
   margin-top: 3px;
-  font-size: 9px;
+  font-size: var(--fontsize);
   color: #2e2e2e;
   transition: color 0.2s;
   display: none;
@@ -210,8 +236,10 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
 
 .node text {
   fill: var(--label-off);
-  font-family: "Archivo", sans-serif;
-  font-size: 11px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: var(--fontsize);
   letter-spacing: 0.06em;
   pointer-events: none;
   text-anchor: middle;
@@ -252,7 +280,7 @@ aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; 
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 12px;
+  font-size: var(--fontsize);
   color: var(--muted);
   letter-spacing: 0.06em;
 }
@@ -280,7 +308,7 @@ footer {
 
 .marquee-text {
   display: inline-block;
-  font-size: 12px;
+  font-size: var(--fontsize);
   color: #1e1e1e;
   letter-spacing: 0.1em;
   text-transform: uppercase;
